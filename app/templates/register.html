@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register - EV Battery RUL System</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Animate.css for smooth animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .header-sticky { position: fixed; top: 0; width: 100%; z-index: 50; transition: all 0.3s; }
+        .header-sticky.scrolled { background: rgba(0, 0, 0, 0.9); }
+        .btn-primary {
+            background: #f43f5e;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover { 
+            background: #e11d48;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .input-field {
+            transition: all 0.3s;
+            border: 2px solid #e5e7eb;
+        }
+        .input-field:focus {
+            border-color: #f43f5e;
+            box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.2);
+        }
+        .alert-success {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
+        }
+        .alert-error {
+            background: linear-gradient(135deg, #f87171, #ef4444);
+            color: white;
+            box-shadow: 0 4px 15px rgba(248, 113, 113, 0.3);
+        }
+        .alert-icon {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="header-sticky bg-black bg-opacity-75">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="{{ url_for('index') }}" class="text-2xl font-bold text-white">
+                EV <span class="text-red-500">Predictor</span>
+            </a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="{{ url_for('index') }}" class="text-white hover:text-red-500 transition-colors">Home</a>
+                <a href="{{ url_for('about') }}" class="text-white hover:text-red-500 transition-colors">About</a>
+                <a href="{{ url_for('register') }}" class="text-white hover:text-red-500 transition-colors">Register</a>
+                <a href="{{ url_for('login') }}" class="text-white hover:text-red-500 transition-colors">Login</a>
+            </nav>
+            <button class="md:hidden text-white focus:outline-none" onclick="toggleMenu()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90">
+            <div class="flex flex-col items-center py-4">
+                <a href="{{ url_for('index') }}" class="text-white py-2 hover:text-red-500 transition-colors">Home</a>
+                <a href="{{ url_for('about') }}" class="text-white py-2 hover:text-red-500 transition-colors">About</a>
+                <a href="{{ url_for('register') }}" class="text-white py-2 hover:text-red-500 transition-colors">Register</a>
+                <a href="{{ url_for('login') }}" class="text-white py-2 hover:text-red-500 transition-colors">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Background Image -->
+    <div class="w-full h-screen bg-cover bg-center"
+        style="background-image: url('{{ url_for('static', filename='images/userhome.jpeg') }}');">
+
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+
+        <!-- Register Section -->
+        <div class="container relative z-20 mx-auto py-24 text-center text-white">
+            <h1 class="text-4xl font-bold mb-3">Register for <span class="text-red-500">EV Battery RUL System</span></h1>
+            <p class="text-lg mb-4">Create your account to begin estimating RUL and manage EV battery swaps.</p>
+
+            <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-xl transition-all hover:shadow-2xl text-black">
+                <!-- Animated Alert -->
+                <div id="formPopup" class="hidden animate__animated animate__fadeInDown mb-6 p-4 rounded-xl flex items-center justify-center space-x-2">
+                    <span id="alertIcon" class="text-2xl"></span>
+                    <span id="alertMessage" class="font-semibold"></span>
+                </div>
+
+                <form id="registerForm" method="POST" class="space-y-4">
+                    <input type="text" name="name" placeholder="Your Name*" class="input-field p-3 rounded-lg w-full focus:outline-none" required />
+                    <input type="email" name="email" placeholder="Your Email*" class="input-field p-3 rounded-lg w-full focus:outline-none" required />
+                    <input type="text" name="phone" placeholder="Your Phone Number*" class="input-field p-3 rounded-lg w-full focus:outline-none" required />
+                    <input type="password" name="password" placeholder="Password*" class="input-field p-3 rounded-lg w-full focus:outline-none" required />
+                    <input type="password" name="confirm_password" placeholder="Confirm Password*" class="input-field p-3 rounded-lg w-full focus:outline-none" required />
+                    <button type="submit" class="btn-primary w-full py-3 font-semibold text-lg">
+                        <span id="submitText">Register</span>
+                        <span id="spinner" class="hidden ml-2">
+                            <svg class="animate-spin h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </span>
+                    </button>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600">Already have an account? <a href="{{ url_for('login') }}" class="text-red-500 font-semibold hover:underline">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-black bg-opacity-75 text-white text-center">
+        <div class="container mx-auto px-4">
+            <p>© 2026 EV Battery RUL System - Designed for Smart Swapping</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('animate__fadeIn');
+        }
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 50) {
+                $('.header-sticky').addClass('scrolled');
+            } else {
+                $('.header-sticky').removeClass('scrolled');
+            }
+        });
+
+        $('#registerForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            const popup = $('#formPopup');
+            const alertIcon = $('#alertIcon');
+            const alertMessage = $('#alertMessage');
+            const submitText = $('#submitText');
+            const spinner = $('#spinner');
+            
+            // Show loading state
+            submitText.text('Registering...');
+            spinner.removeClass('hidden');
+            
+            const password = $('input[name="password"]').val();
+            const confirmPassword = $('input[name="confirm_password"]').val();
+
+            if (password !== confirmPassword) {
+                popup
+                    .removeClass('hidden alert-success')
+                    .addClass('alert-error')
+                    .removeClass('hidden');
+                alertIcon.html('❌');
+                alertMessage.text('Passwords do not match!');
+                
+                // Reset button state
+                submitText.text('Register');
+                spinner.addClass('hidden');
+                return;
+            }
+
+            const formData = $(this).serialize();
+            $.post("{{ url_for('register') }}", formData)
+                .done(function(response) {
+                    popup.removeClass('hidden alert-error').addClass('alert-success');
+                    alertIcon.html('🎉');
+                    alertMessage.text(response.message || 'Registration successful!');
+                    
+                    // Reset form and button
+                    $('#registerForm')[0].reset();
+                    submitText.text('Register');
+                    spinner.addClass('hidden');
+                    
+                    // Redirect to login page after 3 seconds
+                    if (response.success) {
+                        setTimeout(() => {
+                            window.location.href = "{{ url_for('login') }}";
+                        }, 3000);
+                    }
+                })
+                .fail(function(xhr) {
+                    const errorMsg = xhr.responseJSON ? xhr.responseJSON.message : 'Registration failed. Please try again.';
+                    popup.removeClass('hidden alert-success').addClass('alert-error');
+                    alertIcon.html('⚠️');
+                    alertMessage.text(errorMsg);
+                    
+                    // Reset button state
+                    submitText.text('Register');
+                    spinner.addClass('hidden');
+                })
+                .always(function() {
+                    // Auto-hide after 5 seconds if not redirecting
+                    setTimeout(() => {
+                        if (!popup.hasClass('alert-success')) {
+                            popup.addClass('hidden');
+                        }
+                    }, 5000);
+                });
+        });
+    </script>
+</body>
+</html>

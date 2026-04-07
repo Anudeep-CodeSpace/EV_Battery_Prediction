@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="About - ML RUL and Pricing System for EV Battery Swapping Stations" />
+    <meta name="author" content="EV RUL Team" />
+    <title>About - EV Battery RUL & Pricing System</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .header-sticky { position: fixed; top: 0; width: 100%; z-index: 50; transition: all 0.3s; }
+        .header-sticky.scrolled { background: rgba(0, 0, 0, 0.9); }
+        .btn-primary { background: #f43f5e; color: white; padding: 12px 24px; border-radius: 9999px; transition: background 0.3s; }
+        .btn-primary:hover { background: #e11d48; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header-sticky bg-black bg-opacity-75">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="{{ url_for('index') }}" class="text-2xl font-bold text-white">
+                EV <span class="text-red-500">Predictor</span>
+            </a>
+            <nav class="hidden md:flex space-x-6">
+                <a href="{{ url_for('index') }}" class="text-white hover:text-red-500">Home</a>
+                <a href="{{ url_for('about') }}" class="text-white hover:text-red-500">About</a>
+                <a href="{{ url_for('register') }}" class="text-white hover:text-red-500">Register</a>
+                <a href="{{ url_for('login') }}" class="text-white hover:text-red-500">Login</a>
+            </nav>
+            <button class="md:hidden text-white focus:outline-none" onclick="toggleMenu()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90">
+            <div class="flex flex-col items-center py-4">
+                <a href="{{ url_for('index') }}" class="text-white py-2">Home</a>
+                <a href="{{ url_for('about') }}" class="text-white py-2">About</a>
+                <a href="{{ url_for('register') }}" class="text-white py-2">Register</a>
+                <a href="{{ url_for('login') }}" class="text-white py-2">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="pt-32 pb-20 px-4 bg-gray-100 text-gray-800">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">About the Project</h1>
+    
+            <!-- Project Title Card -->
+            <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-red-500 mb-2">Project Title</h2>
+                <p class="text-lg leading-relaxed text-gray-700">
+                    A Machine Learning-Based Real-Time Remaining Useful Life Estimation and Fair Pricing Strategy for Electric Vehicle Battery Swapping Stations
+                </p>
+            </div>
+    
+            <!-- Objective Card -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white shadow-md rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-red-500 mb-2">Project Overview</h2>
+                    <p class="text-gray-700 text-justify">
+                        This project aims to estimate the <strong>Remaining Useful Life (RUL)</strong> of EV batteries using machine learning and suggest fair pricing based on battery health. The system leverages real-world operational data to drive smarter decisions in the EV battery swapping domain.
+                    </p>
+                </div>
+    
+                <div class="bg-white shadow-md rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-red-500 mb-2">Machine Learning Models</h2>
+                    <p class="text-gray-700 text-justify">
+                        Starting with XGBoost, we enhanced performance with <strong>Random Forest Regressor</strong>, <strong>KNN Regressor</strong>, <strong>Stacking</strong>, and <strong>Voting Regressors</strong>. These models provide accurate RUL predictions and help in dynamically adjusting swap pricing.
+                    </p>
+                </div>
+            </div>
+    
+            <!-- Benefits Card -->
+            <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold text-red-500 mb-2">Why It Matters</h2>
+                <p class="text-gray-700 text-justify">
+                    By offering predictive insights and fair pricing strategies, the system empowers users and station operators to make informed choices, improve cost efficiency, reduce battery waste, and maintain optimal performance across EV battery inventories.
+                </p>
+            </div>
+    
+            <!-- Web Integration Card -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-red-500 mb-2">Interactive Web Platform</h2>
+                <p class="text-gray-700 text-justify">
+                    The system features a user-friendly web interface for real-time prediction and pricing suggestions. Users can input battery parameters and instantly receive insights, enhancing trust and transparency in EV infrastructure management.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-black bg-opacity-75 text-white text-center">
+        <div class="container mx-auto px-4">
+            <p>© 2026 EV Battery RUL System - Designed for Smart Swapping</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 50) {
+                $('.header-sticky').addClass('scrolled');
+            } else {
+                $('.header-sticky').removeClass('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
